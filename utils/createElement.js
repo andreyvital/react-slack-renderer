@@ -18,7 +18,6 @@ exports.getHostContextNode = function getHostContextNode(rootNode) {
   } else {
     rootNodeInstance = new SlackRoot();
   }
-
   return rootNodeInstance;
 };
 
