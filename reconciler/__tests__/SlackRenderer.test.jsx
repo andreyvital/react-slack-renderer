@@ -9,7 +9,9 @@ const {
   SlackEveryone,
   SlackHere,
   SlackAtChannel,
-  SlackMentionChannel
+  SlackMentionChannel,
+  SlackAttachments,
+  SlackAttachment
 } = require("../../components");
 
 describe("SlackRenderer", () => {
@@ -60,6 +62,32 @@ describe("SlackRenderer", () => {
 
     assert.deepEqual(message, {
       text: "@everyone @here @channel @channel"
+    });
+  });
+
+  it("can render attachments", () => {
+    const message = SlackRenderer.render(
+      <SlackMessage>
+        <SlackText>
+          Heyo
+          <SlackEveryone />
+        </SlackText>
+        <SlackAttachments>
+          <SlackAttachment>
+            <SlackText>Hello, world!</SlackText>
+          </SlackAttachment>
+          <SlackAttachment />
+        </SlackAttachments>
+      </SlackMessage>
+    );
+
+    assert.deepEqual(message, {
+      text: "Heyo @everyone",
+      attachments: [
+        {
+          text: "Hello, world!"
+        }
+      ]
     });
   });
 });
