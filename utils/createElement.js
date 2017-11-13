@@ -36,12 +36,23 @@ exports.createElement = function createElement(type, props) {
     case "SlackUser":
       return new SlackUser(rootNodeInstance, props);
     case "SlackEveryone":
-      return new SlackAnnouncement(rootNodeInstance, {
-        ...props,
-        mention: "@here"
-      });
+      return factoryAnnouncement("@everyone", props);
+    case "SlackHere":
+      return factoryAnnouncement("@here", props);
+    case "SlackHere":
+      return factoryAnnouncement("@here", props);
+    case "SlackMentionChannel":
+    case "SlackAtChannel":
+      return factoryAnnouncement("@channel", props);
     default:
       // can probably throw here if attempted to use an unknown/invalid element
       return undefined;
   }
 };
+
+function factoryAnnouncement(mention, props) {
+  return new SlackAnnouncement(rootNodeInstance, {
+    ...props,
+    mention
+  });
+}

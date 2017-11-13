@@ -11,6 +11,10 @@ const SlackText = require("./SlackText");
 const ANNOUNCEMENTS = ["@here", "@channel", "@everyone"];
 
 module.exports = class SlackAnnouncement extends SlackComponent {
+  /**
+   * @param {SlackRoot} root
+   * @param {Object}    props
+   */
   constructor(root, props) {
     super();
 
@@ -34,7 +38,7 @@ module.exports = class SlackAnnouncement extends SlackComponent {
 
     this.root.message = this.root.message.update(
       "text",
-      textString => `${textString} ${this.props.mention}`
+      text => (text ? `${text} ${this.props.mention}` : this.props.mention)
     );
   }
 };
