@@ -14,6 +14,10 @@ class SlackAuthor extends SlackComponent {
     this.props = props;
   }
 
+  addParentAttachment(keyName, value) {
+    this.parent.attachment = this.parent.attachment.set(keyName, value);
+  }
+
   render() {
     invariant(
       this.parent instanceof SlackAttachment,
@@ -23,17 +27,17 @@ class SlackAuthor extends SlackComponent {
     const { name, link, icon, children } = this.props;
 
     if (name) {
-      this.parent.attachment = this.parent.attachment.set("author_name", name);
+      this.addParentAttachment("author_name", name);
     } else if (children) {
-      this.parent.attachment = this.parent.attachment.set("author_name", children);
+      this.addParentAttachment("author_name", children);
     }
 
     if (link) {
-      this.parent.attachment = this.parent.attachment.set("author_link", link);
+      this.addParentAttachment("author_link", link);
     }
 
     if (icon) {
-      this.parent.attachment = this.parent.attachment.set("author_icon", icon);
+      this.addParentAttachment("author_icon", icon);
     }
   }
 }

@@ -13,10 +13,10 @@ const SlackAuthor = require("../components/SlackAuthor");
 let rootNodeInstance = null;
 
 exports.getHostContextNode = function getHostContextNode(rootNode) {
+  rootNodeInstance = new SlackRoot();
+
   if (typeof rootNode !== undefined) {
     rootNodeInstance = rootNode;
-  } else {
-    rootNodeInstance = new SlackRoot();
   }
 
   return rootNodeInstance;

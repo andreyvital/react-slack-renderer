@@ -22,9 +22,7 @@ module.exports = class SlackAttachments extends SlackComponent {
 
     // let's filter empty attachments
     this.root.message = this.root.message.update("attachments", attachments => {
-      return attachments.filter(attachment => {
-        return attachment.size !== 0;
-      });
+      return attachments.filter(attachment => attachment.size !== 0);
     });
   }
 };

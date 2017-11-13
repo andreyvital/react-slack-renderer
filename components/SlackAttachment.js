@@ -27,9 +27,7 @@ module.exports = class SlackAttachment extends SlackComponent {
 
     this.parent.root.message = this.parent.root.message.update(
       "attachments",
-      previousAttachments => {
-        return previousAttachments.push(attachment);
-      }
+      previousAttachments => previousAttachments.push(attachment)
     );
   }
 };

@@ -49,7 +49,7 @@ class SlackAttachmentField extends SlackComponent {
       fields.push(
         Map({
           title: this.props.title,
-          short: this.props.short ? true : false,
+          short: this.props.short || false,
           value: value || children
         })
       )
