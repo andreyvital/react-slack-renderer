@@ -6,6 +6,8 @@ const SlackUser = require("../components/SlackUser");
 const SlackAnnouncement = require("../components/SlackAnnouncement");
 const SlackAttachments = require("../components/SlackAttachments");
 const SlackAttachment = require("../components/SlackAttachment");
+const SlackAttachmentField = require("../components/SlackAttachmentField");
+const SlackAuthor = require("../components/SlackAuthor");
 
 // that's for the root container instance
 let rootNodeInstance = null;
@@ -38,23 +40,32 @@ exports.createElement = function createElement(type, props) {
     case "SlackUser":
       return new SlackUser(rootNodeInstance, props);
     case "SlackEveryone":
-      return factoryAnnouncement("@everyone", props);
+      return factorySlackAnnouncement("@everyone", props);
     case "SlackHere":
-      return factoryAnnouncement("@here", props);
+      return factorySlackAnnouncement("@here", props);
     case "SlackMentionChannel":
     case "SlackAtChannel":
-      return factoryAnnouncement("@channel", props);
+      return factorySlackAnnouncement("@channel", props);
     case "SlackAttachments":
       return new SlackAttachments(rootNodeInstance, props);
     case "SlackAttachment":
       return new SlackAttachment(rootNodeInstance, props);
+    case "SlackAttachmentField":
+      return new SlackAttachmentField(rootNodeInstance, props);
+    case "SlackAuthor":
+      return new SlackAuthor(rootNodeInstance, props);
     default:
       // can probably throw here if attempted to use an unknown/invalid element
       return undefined;
   }
 };
 
-function factoryAnnouncement(mention, props) {
+/**
+ * @param  {String} mention
+ * @param  {Object} props
+ * @return {SlackAnnouncement}
+ */
+function factorySlackAnnouncement(mention, props) {
   return new SlackAnnouncement(rootNodeInstance, {
     ...props,
     mention
