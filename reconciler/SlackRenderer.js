@@ -1,0 +1,94 @@
+const Reconciler = require("react-reconciler");
+const emptyObject = require("fbjs/lib/emptyObject");
+const { createElement, getHostContextNode } = require("../utils/createElement");
+
+const SlackRenderer = Reconciler({
+  appendInitialChild: function appendInitialChild(parentInstance, child) {
+    parentInstance.appendChild(child);
+    child.parent = parentInstance;
+  },
+
+  createInstance: function createInstance(type, props, internalInstanceHandle) {
+    return createElement(type, props);
+  },
+
+  createTextInstance: function createTextInstance(
+    text,
+    rootContainerInstance,
+    internalInstanceHandle
+  ) {
+    return text;
+  },
+
+  finalizeInitialChildren: function finalizeInitialChildren(element, type, props) {
+    return false;
+  },
+
+  getPublicInstance: function getPublicInstance(instance) {
+    return instance;
+  },
+
+  prepareForCommit: function prepareForCommit() {},
+
+  prepareUpdate: function prepareUpdate(element, type, oldProps, newProps) {
+    return true;
+  },
+
+  resetAfterCommit: function resetAfterCommit() {},
+  resetTextContent: function resetTextContent(element) {},
+
+  getRootHostContext: function getRootHostContext(rootInstance) {
+    return getHostContextNode(rootInstance);
+  },
+
+  getChildHostContext: function getChildHostContext() {
+    return emptyObject;
+  },
+
+  shouldSetTextContent: function shouldSetTextContent(type, props) {
+    return false;
+  },
+
+  now: function now() {},
+
+  useSyncScheduling: true,
+
+  mutation: {
+    appendChild: function appendChild(parentInstance, child) {
+      parentInstance.appendChild(child);
+      child.parent = parentInstance;
+    },
+
+    appendChildToContainer: function appendChildToContainer(parentInstance, child) {
+      parentInstance.appendChild(child);
+      child.parent = parentInstance;
+    },
+
+    removeChild: function removeChild(parentInstance, child) {
+      parentInstance.removeChild(child);
+    },
+
+    removeChildFromContainer: function removeChildFromContainer(parentInstance, child) {
+      parentInstance.removeChild(child);
+    },
+
+    insertBefore: function insertBefore(parentInstance, child, beforeChild) {},
+    commitUpdate: function commitUpdate(instance, updatePayload, type, oldProps, newProps) {},
+    commitMount: function commitMount(instance, updatePayload, type, oldProps, newProps) {},
+
+    commitTextUpdate: function commitTextUpdate(textInstance, oldText, newText) {
+      textInstance.children = newText;
+    }
+  }
+});
+
+module.exports = {
+  render: function render(element) {
+    const container = createElement("ROOT");
+
+    const node = SlackRenderer.createContainer(container);
+    SlackRenderer.updateContainer(element, node, null);
+
+    return container.render();
+  }
+};
