@@ -41,8 +41,6 @@ exports.createElement = function createElement(type, props) {
       return factoryAnnouncement("@everyone", props);
     case "SlackHere":
       return factoryAnnouncement("@here", props);
-    case "SlackHere":
-      return factoryAnnouncement("@here", props);
     case "SlackMentionChannel":
     case "SlackAtChannel":
       return factoryAnnouncement("@channel", props);

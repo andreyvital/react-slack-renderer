@@ -8,6 +8,7 @@ module.exports = class SlackText extends SlackComponent {
    */
   constructor(root) {
     super();
+
     this.root = root;
   }
 
@@ -18,7 +19,9 @@ module.exports = class SlackText extends SlackComponent {
       if (typeof child === "string") {
         if (parent instanceof SlackMessage) {
           this.root.message = this.root.message.set("text", child);
-        } else if (parent instanceof SlackAttachment) {
+        }
+
+        if (parent instanceof SlackAttachment) {
           parent.attachment = parent.attachment.set("text", child);
         }
       }

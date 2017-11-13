@@ -1,6 +1,7 @@
 const Reconciler = require("react-reconciler");
-const emptyObject = require("fbjs/lib/emptyObject");
 const { createElement, getHostContextNode } = require("../utils/createElement");
+
+const noop = () => {};
 
 const SlackRenderer = Reconciler({
   appendInitialChild: function appendInitialChild(parentInstance, child) {
@@ -28,28 +29,28 @@ const SlackRenderer = Reconciler({
     return instance;
   },
 
-  prepareForCommit: function prepareForCommit() {},
+  prepareForCommit: noop,
 
   prepareUpdate: function prepareUpdate(element, type, oldProps, newProps) {
     return true;
   },
 
-  resetAfterCommit: function resetAfterCommit() {},
-  resetTextContent: function resetTextContent(element) {},
+  resetAfterCommit: noop,
+  resetTextContent: noop,
 
   getRootHostContext: function getRootHostContext(rootInstance) {
     return getHostContextNode(rootInstance);
   },
 
   getChildHostContext: function getChildHostContext() {
-    return emptyObject;
+    return {};
   },
 
   shouldSetTextContent: function shouldSetTextContent(type, props) {
     return false;
   },
 
-  now: function now() {},
+  now: noop,
 
   useSyncScheduling: true,
 
@@ -64,25 +65,20 @@ const SlackRenderer = Reconciler({
       child.parent = parentInstance;
     },
 
-    removeChild: function removeChild(parentInstance, child) {
-      parentInstance.removeChild(child);
-    },
-
-    removeChildFromContainer: function removeChildFromContainer(parentInstance, child) {
-      parentInstance.removeChild(child);
-    },
-
-    insertBefore: function insertBefore(parentInstance, child, beforeChild) {},
-    commitUpdate: function commitUpdate(instance, updatePayload, type, oldProps, newProps) {},
-    commitMount: function commitMount(instance, updatePayload, type, oldProps, newProps) {},
-
-    commitTextUpdate: function commitTextUpdate(textInstance, oldText, newText) {
-      textInstance.children = newText;
-    }
+    removeChild: noop,
+    removeChildFromContainer: noop,
+    insertBefore: noop,
+    commitUpdate: noop,
+    commitMount: noop,
+    commitTextUpdate: noop
   }
 });
 
 module.exports = {
+  /**
+   * @param  {ReactElement} element
+   * @return {Object}
+   */
   render: function render(element) {
     const container = createElement("ROOT");
 

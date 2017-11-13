@@ -77,6 +77,14 @@ describe("SlackRenderer", () => {
             <SlackText>Hello, world!</SlackText>
           </SlackAttachment>
           <SlackAttachment />
+          <SlackAttachment>
+            <SlackText>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nostrum.
+            </SlackText>
+          </SlackAttachment>
+          <SlackAttachment>
+            <SlackText>Lorem ipsum dolor sit amet.</SlackText>
+          </SlackAttachment>
         </SlackAttachments>
       </SlackMessage>
     );
@@ -86,6 +94,12 @@ describe("SlackRenderer", () => {
       attachments: [
         {
           text: "Hello, world!"
+        },
+        {
+          text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nostrum."
+        },
+        {
+          text: "Lorem ipsum dolor sit amet."
         }
       ]
     });
