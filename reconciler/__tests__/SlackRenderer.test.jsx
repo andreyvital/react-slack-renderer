@@ -3,7 +3,7 @@ const { describe, it } = require("mocha");
 const assert = require("assert");
 
 const SlackRenderer = require("../SlackRenderer");
-const { SlackMessage, SlackText } = require("../../components");
+const { SlackMessage, SlackText, SlackEveryone } = require("../../components");
 
 describe("SlackRenderer", () => {
   it("renders an empty message", () => {
@@ -22,6 +22,21 @@ describe("SlackRenderer", () => {
 
     assert.deepEqual(message, {
       text: "Hello, world"
+    });
+  });
+
+  it("renders a text with @everyone mention", () => {
+    const message = SlackRenderer.render(
+      <SlackMessage>
+        <SlackText>
+          Hey y'all
+          <SlackEveryone />
+        </SlackText>
+      </SlackMessage>
+    );
+
+    assert.deepEqual(message, {
+      text: "Hey y'all @here"
     });
   });
 });

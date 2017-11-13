@@ -10,7 +10,7 @@ module.exports = class SlackText extends SlackComponent {
     this.children.forEach(child => {
       if (typeof child === "string") {
         this.root.message = this.root.message.set("text", child);
-      } else if (typeof child === "object") {
+      } else if (child instanceof SlackComponent) {
         child.render();
       }
     });
