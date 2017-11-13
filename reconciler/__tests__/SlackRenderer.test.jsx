@@ -13,61 +13,161 @@ const {
   SlackAttachments,
   SlackAttachment,
   SlackAttachmentField,
-  SlackAuthor
+  SlackAuthor,
+  SlackMention
 } = require("../../components");
 
 describe("SlackRenderer", () => {
   it("renders an empty message", () => {
-    const message = SlackRenderer.render(<SlackMessage />);
-
-    assert.deepEqual(message, {}, "should've rendered an empty message");
+    assert.deepEqual(SlackRenderer.render(<SlackMessage />), {});
   });
 
-  it("renders a text", () => {
-    const message = SlackRenderer.render(
-      <SlackMessage>
-        <SlackText>Hello, world</SlackText>
-      </SlackMessage>
-    );
+  describe("text", () => {
+    it("renders Hello, world", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackText>Hello, world</SlackText>
+        </SlackMessage>
+      );
 
-    assert.deepEqual(message, {
-      text: "Hello, world"
+      assert.deepEqual(message, {
+        text: "Hello, world"
+      });
+    });
+
+    it("renders multiple <SlackText> as paragraphs", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          {[1, 2, 3, 4].map(number => {
+            return <SlackText key={number}>Paragraph {number}</SlackText>;
+          })}
+        </SlackMessage>
+      );
+
+      assert.deepEqual(message, {
+        text: "Paragraph 1\nParagraph 2\nParagraph 3\nParagraph 4"
+      });
+    });
+
+    it("renders a forced spacing", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackText>
+            Lorem ipsum
+            {"  -  "}
+            dolor sit.
+          </SlackText>
+        </SlackMessage>
+      );
+
+      assert.deepEqual(message, {
+        text: "Lorem ipsum  -  dolor sit."
+      });
     });
   });
 
-  it("renders a text with @everyone mention", () => {
-    const message = SlackRenderer.render(
-      <SlackMessage>
-        <SlackText>
-          Hey y'all
-          <SlackEveryone />
-        </SlackText>
-      </SlackMessage>
-    );
+  describe("mentions within text", () => {
+    it("renders a simple global mention", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackText>
+            Hey y'all <SlackEveryone />
+          </SlackText>
+        </SlackMessage>
+      );
 
-    assert.deepEqual(message, {
-      text: "Hey y'all @everyone"
+      assert.deepEqual(message, {
+        text: "Hey y'all @everyone"
+      });
     });
-  });
 
-  it("rings on everyoene", () => {
-    const message = SlackRenderer.render(
-      <SlackMessage>
-        <SlackText>
-          <SlackEveryone />
-          <SlackHere />
-          <SlackAtChannel />
-          <SlackMentionChannel />
-        </SlackText>
-      </SlackMessage>
-    );
+    it("renders a channel mention", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackText>
+            Lorem ipsum dolor. <SlackMention>#channel</SlackMention>
+          </SlackText>
+        </SlackMessage>
+      );
 
-    assert.deepEqual(message, {
-      text: "@everyone @here @channel @channel"
+      assert.deepEqual(message, {
+        text: "Lorem ipsum dolor. #channel"
+      });
+    });
+
+    it("renders an user mention", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackText>
+            Lorem ipsum dolor. <SlackMention>@lorem</SlackMention> Lorem ipsum dolor sit amet.
+          </SlackText>
+        </SlackMessage>
+      );
+
+      assert.deepEqual(message, {
+        text: "Lorem ipsum dolor. @lorem Lorem ipsum dolor sit amet."
+      });
+    });
+
+    it("renders global announcements mentions", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackText>
+            Lorem ipsum. <SlackEveryone /> <SlackHere /> <SlackAtChannel />
+          </SlackText>
+        </SlackMessage>
+      );
+
+      assert.deepEqual(message, {
+        text: "Lorem ipsum. @everyone @here @channel"
+      });
     });
   });
 
   describe("attachments", () => {
+    it("throws if rendering outside <SlackMessage />", () => {
+      assert.throws(
+        () =>
+          SlackRenderer.render(
+            <SlackMessage>
+              <SlackText>
+                <SlackAttachments>
+                  <SlackAttachments />
+                </SlackAttachments>
+              </SlackText>
+            </SlackMessage>
+          ),
+        /can only appear as a child of/
+      );
+    });
+
+    it("combines multiple attachments", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackAttachments>
+            <SlackAttachment>
+              <SlackText>Lorem ipsum dolor sit amet.</SlackText>
+            </SlackAttachment>
+          </SlackAttachments>
+          <SlackAttachments>
+            <SlackAttachment>
+              <SlackText>Lorem ipsum dolor sit amet.</SlackText>
+            </SlackAttachment>
+          </SlackAttachments>
+        </SlackMessage>
+      );
+      assert.deepEqual(message, {
+        attachments: [
+          {
+            text: "Lorem ipsum dolor sit amet."
+          },
+          {
+            text: "Lorem ipsum dolor sit amet."
+          }
+        ]
+      });
+    });
+
     it("filters empty attachments", () => {
       const message = SlackRenderer.render(
         <SlackMessage>
@@ -93,12 +193,11 @@ describe("SlackRenderer", () => {
       });
     });
 
-    it("can render 'em", () => {
+    it("renders multiple attachments", () => {
       const message = SlackRenderer.render(
         <SlackMessage>
           <SlackText>
-            Heyo
-            <SlackEveryone />
+            Heyo <SlackEveryone />
           </SlackText>
           <SlackAttachments>
             <SlackAttachment>

@@ -2,6 +2,10 @@ const { Map } = require("immutable");
 const SlackComponent = require("../reconciler/SlackComponent");
 
 module.exports = class SlackAttachment extends SlackComponent {
+  /**
+   * @param  {SlackRoot} root
+   * @param  {Object}    props
+   */
   constructor(root, props) {
     super();
 
@@ -10,24 +14,30 @@ module.exports = class SlackAttachment extends SlackComponent {
     this.attachment = new Map();
   }
 
-  render() {
+  renderProps() {
     const { color } = this.props;
 
     if (color) {
       this.attachment = this.attachment.set("color", color);
     }
+  }
 
+  renderChildren() {
     this.children.forEach(child => {
-      if (typeof child === "object") {
+      if (child instanceof SlackComponent) {
         child.render();
       }
     });
+  }
+
+  render() {
+    this.renderProps();
+    this.renderChildren();
 
     const attachment = this.attachment;
 
-    this.parent.root.message = this.parent.root.message.update(
-      "attachments",
-      previousAttachments => previousAttachments.push(attachment)
+    this.root.message = this.root.message.update("attachments", attachments =>
+      attachments.push(attachment)
     );
   }
 };

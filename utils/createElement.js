@@ -1,13 +1,12 @@
 const SlackRoot = require("../components/SlackRoot");
 const SlackMessage = require("../components/SlackMessage");
 const SlackText = require("../components/SlackText");
-const SlackChannel = require("../components/SlackChannel");
-const SlackUser = require("../components/SlackUser");
 const SlackAnnouncement = require("../components/SlackAnnouncement");
 const SlackAttachments = require("../components/SlackAttachments");
 const SlackAttachment = require("../components/SlackAttachment");
 const SlackAttachmentField = require("../components/SlackAttachmentField");
 const SlackAuthor = require("../components/SlackAuthor");
+const SlackMention = require("../components/SlackMention");
 
 // that's for the root container instance
 let rootNodeInstance = null;
@@ -18,6 +17,7 @@ exports.getHostContextNode = function getHostContextNode(rootNode) {
   } else {
     rootNodeInstance = new SlackRoot();
   }
+
   return rootNodeInstance;
 };
 
@@ -34,10 +34,6 @@ exports.createElement = function createElement(type, props) {
       return new SlackMessage(rootNodeInstance, props);
     case "SlackText":
       return new SlackText(rootNodeInstance, props);
-    case "SlackChannel":
-      return new SlackChannel(rootNodeInstance, props);
-    case "SlackUser":
-      return new SlackUser(rootNodeInstance, props);
     case "SlackEveryone":
       return factorySlackAnnouncement("@everyone", props);
     case "SlackHere":
@@ -53,6 +49,8 @@ exports.createElement = function createElement(type, props) {
       return new SlackAttachmentField(rootNodeInstance, props);
     case "SlackAuthor":
       return new SlackAuthor(rootNodeInstance, props);
+    case "SlackMention":
+      return new SlackMention(rootNodeInstance, props);
     default:
       // can probably throw here if attempted to use an unknown/invalid element
       return undefined;

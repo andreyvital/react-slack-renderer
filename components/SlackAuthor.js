@@ -14,8 +14,12 @@ class SlackAuthor extends SlackComponent {
     this.props = props;
   }
 
-  setParentAttachment(keyName, value) {
-    this.parent.attachment = this.parent.attachment.set(keyName, value);
+  /**
+   * @param {String} fieldKey
+   * @param {String} fieldValue
+   */
+  setParentAttachmentField(fieldKey, fieldValue) {
+    this.parent.attachment = this.parent.attachment.set(fieldKey, fieldValue);
   }
 
   render() {
@@ -27,17 +31,17 @@ class SlackAuthor extends SlackComponent {
     const { name, link, icon, children } = this.props;
 
     if (name) {
-      this.setParentAttachment("author_name", name);
+      this.setParentAttachmentField("author_name", name);
     } else if (children) {
-      this.setParentAttachment("author_name", children);
+      this.setParentAttachmentField("author_name", children);
     }
 
     if (link) {
-      this.setParentAttachment("author_link", link);
+      this.setParentAttachmentField("author_link", link);
     }
 
     if (icon) {
-      this.setParentAttachment("author_icon", icon);
+      this.setParentAttachmentField("author_icon", icon);
     }
   }
 }

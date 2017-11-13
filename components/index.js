@@ -8,5 +8,4 @@ exports.SlackAttachments = "SlackAttachments";
 exports.SlackAttachment = "SlackAttachment";
 exports.SlackAttachmentField = "SlackAttachmentField";
 exports.SlackAuthor = "SlackAuthor";
-
-exports.Text = "SlackText";
+exports.SlackMention = "SlackMention";

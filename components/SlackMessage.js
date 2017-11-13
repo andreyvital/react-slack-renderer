@@ -8,15 +8,11 @@ module.exports = class SlackMessage extends SlackComponent {
     this.props = props;
   }
 
-  renderChildNode() {
+  render() {
     this.children.forEach(child => {
-      if (typeof child === "object") {
+      if (child instanceof SlackComponent) {
         child.render();
       }
     });
-  }
-
-  render() {
-    this.renderChildNode();
   }
 };

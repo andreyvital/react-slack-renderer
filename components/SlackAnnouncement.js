@@ -1,4 +1,5 @@
 const invariant = require("invariant");
+
 const SlackComponent = require("../reconciler/SlackComponent");
 const SlackText = require("./SlackText");
 
@@ -29,16 +30,15 @@ module.exports = class SlackAnnouncement extends SlackComponent {
         "only used within a <SlackText />"
     );
 
+    const { mention } = this.props;
+
     invariant(
-      ANNOUNCEMENTS.includes(this.props.mention),
-      "Unexpected mention: %s. Valid ones are: %s",
-      this.props.mention,
+      ANNOUNCEMENTS.includes(mention),
+      "Unexpected mention/announcement: %s. Valid ones are: %s",
+      mention,
       ANNOUNCEMENTS.join(", ")
     );
 
-    this.root.message = this.root.message.update(
-      "text",
-      text => (text ? `${text} ${this.props.mention}` : this.props.mention)
-    );
+    return mention.trim();
   }
 };
