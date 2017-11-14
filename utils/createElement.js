@@ -9,17 +9,16 @@ const SlackAuthor = require("../components/SlackAuthor");
 const SlackMention = require("../components/SlackMention");
 const SlackTitle = require("../components/SlackTitle");
 
-// that's for the root container instance
-let rootNodeInstance = null;
+let ROOT = null;
 
 exports.getHostContextNode = function getHostContextNode(rootNode) {
   if (typeof rootNode !== undefined) {
-    rootNodeInstance = rootNode;
+    ROOT = rootNode;
   } else {
-    rootNodeInstance = new SlackRoot();
+    ROOT = new SlackRoot();
   }
 
-  return rootNodeInstance;
+  return ROOT;
 };
 
 /**
@@ -32,9 +31,9 @@ exports.createElement = function createElement(type, props) {
     case "ROOT":
       return new SlackRoot();
     case "SlackMessage":
-      return new SlackMessage(rootNodeInstance, props);
+      return new SlackMessage(ROOT, props);
     case "SlackText":
-      return new SlackText(rootNodeInstance, props);
+      return new SlackText(ROOT, props);
     case "SlackEveryone":
       return factorySlackAnnouncement("@everyone", props);
     case "SlackHere":
@@ -43,17 +42,17 @@ exports.createElement = function createElement(type, props) {
     case "SlackAtChannel":
       return factorySlackAnnouncement("@channel", props);
     case "SlackAttachments":
-      return new SlackAttachments(rootNodeInstance, props);
+      return new SlackAttachments(ROOT, props);
     case "SlackAttachment":
-      return new SlackAttachment(rootNodeInstance, props);
+      return new SlackAttachment(ROOT, props);
     case "SlackAttachmentField":
-      return new SlackAttachmentField(rootNodeInstance, props);
+      return new SlackAttachmentField(ROOT, props);
     case "SlackAuthor":
-      return new SlackAuthor(rootNodeInstance, props);
+      return new SlackAuthor(ROOT, props);
     case "SlackMention":
-      return new SlackMention(rootNodeInstance, props);
+      return new SlackMention(ROOT, props);
     case "SlackTitle":
-      return new SlackTitle(rootNodeInstance, props);
+      return new SlackTitle(ROOT, props);
     default:
       throw new Error(`Unknown Slack element: ${type}`);
   }
@@ -65,7 +64,7 @@ exports.createElement = function createElement(type, props) {
  * @return {SlackAnnouncement}
  */
 function factorySlackAnnouncement(mention, props) {
-  return new SlackAnnouncement(rootNodeInstance, {
+  return new SlackAnnouncement(ROOT, {
     ...props,
     mention
   });
