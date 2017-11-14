@@ -1,8 +1,10 @@
 const React = require("react");
 const { describe, it } = require("mocha");
 const assert = require("assert");
+const sinon = require("sinon");
 
 const SlackRenderer = require("../SlackRenderer");
+
 const {
   SlackMessage,
   SlackText,
@@ -20,6 +22,35 @@ const {
 describe("SlackRenderer", () => {
   it("renders an empty message", () => {
     assert.deepEqual(SlackRenderer.render(<SlackMessage />), {});
+  });
+
+  it("throws if an invalid element is rendered", () => {
+    const errorStub = sinon.stub(console, "error");
+
+    assert.throws(
+      () =>
+        SlackRenderer.render(
+          <div>
+            <SlackText>Lorem ipsum dolor sit amet.</SlackText>
+          </div>
+        ),
+      /Unknown Slack element: div/
+    );
+
+    assert.throws(
+      () =>
+        SlackRenderer.render(
+          <SlackMessage>
+            <SlackText>Lorem ipsum dolor sit amet.</SlackText>
+            <span>Lorem ipsum dolor sit.</span>
+          </SlackMessage>
+        ),
+      /Unknown Slack element: span/
+    );
+
+    errorStub.restore();
+
+    assert.equal(errorStub.callCount, 2);
   });
 
   describe("text", () => {

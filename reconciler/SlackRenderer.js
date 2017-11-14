@@ -9,7 +9,7 @@ const SlackRenderer = Reconciler({
     child.parent = parentInstance;
   },
 
-  createInstance: function createInstance(type, props, internalInstanceHandle) {
+  createInstance: function createInstance(type, props) {
     return createElement(type, props);
   },
 
@@ -50,7 +50,7 @@ const SlackRenderer = Reconciler({
     return false;
   },
 
-  now: noop,
+  now: Date.now,
 
   useSyncScheduling: true,
 

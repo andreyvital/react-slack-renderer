@@ -4,14 +4,14 @@ module.exports = class SlackComponent {
   }
 
   /**
-   * @param {Object} child
+   * @param {*} child
    */
   appendChild(child) {
     this.children.push(child);
   }
 
   /**
-   * @param {Object} child
+   * @param {*} child
    */
   removeChild(child) {
     const index = this.children.indexOf(child);

@@ -52,8 +52,7 @@ exports.createElement = function createElement(type, props) {
     case "SlackMention":
       return new SlackMention(rootNodeInstance, props);
     default:
-      // can probably throw here if attempted to use an unknown/invalid element
-      return undefined;
+      throw new Error(`Unknown Slack element: ${type}`);
   }
 };
 
