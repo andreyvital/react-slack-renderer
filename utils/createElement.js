@@ -7,6 +7,7 @@ const SlackAttachment = require("../components/SlackAttachment");
 const SlackAttachmentField = require("../components/SlackAttachmentField");
 const SlackAuthor = require("../components/SlackAuthor");
 const SlackMention = require("../components/SlackMention");
+const SlackTitle = require("../components/SlackTitle");
 
 // that's for the root container instance
 let rootNodeInstance = null;
@@ -51,6 +52,8 @@ exports.createElement = function createElement(type, props) {
       return new SlackAuthor(rootNodeInstance, props);
     case "SlackMention":
       return new SlackMention(rootNodeInstance, props);
+    case "SlackTitle":
+      return new SlackTitle(rootNodeInstance, props);
     default:
       throw new Error(`Unknown Slack element: ${type}`);
   }

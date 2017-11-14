@@ -39,6 +39,6 @@ module.exports = class SlackAnnouncement extends SlackComponent {
       ANNOUNCEMENTS.join(", ")
     );
 
-    return mention.trim();
+    return mention;
   }
 };

@@ -15,10 +15,14 @@ module.exports = class SlackAttachment extends SlackComponent {
   }
 
   renderProps() {
-    const { color } = this.props;
+    const { color, timestamp } = this.props;
 
     if (color) {
       this.attachment = this.attachment.set("color", color);
+    }
+
+    if (timestamp) {
+      this.attachment = this.attachment.set("ts", timestamp);
     }
   }
 

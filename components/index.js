@@ -9,3 +9,4 @@ exports.SlackAttachment = "SlackAttachment";
 exports.SlackAttachmentField = "SlackAttachmentField";
 exports.SlackAuthor = "SlackAuthor";
 exports.SlackMention = "SlackMention";
+exports.SlackTitle = "SlackTitle";

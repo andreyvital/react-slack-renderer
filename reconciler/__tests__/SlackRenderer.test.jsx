@@ -16,7 +16,8 @@ const {
   SlackAttachment,
   SlackAttachmentField,
   SlackAuthor,
-  SlackMention
+  SlackMention,
+  SlackTitle
 } = require("../../components");
 
 describe("SlackRenderer", () => {
@@ -334,6 +335,54 @@ describe("SlackRenderer", () => {
         attachments: [
           {
             author_name: "CentaurWarchief"
+          }
+        ]
+      });
+    });
+
+    it("renders attachment link", () => {
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackAttachments>
+            <SlackAttachment>
+              <SlackTitle>Lorem ipsum dolor.</SlackTitle>
+            </SlackAttachment>
+            <SlackAttachment>
+              <SlackTitle link="http://mussumipsum.com/">Lorem ipsum dolor.</SlackTitle>
+            </SlackAttachment>
+          </SlackAttachments>
+        </SlackMessage>
+      );
+
+      assert.deepEqual(message, {
+        attachments: [
+          {
+            title: "Lorem ipsum dolor."
+          },
+          {
+            title: "Lorem ipsum dolor.",
+            title_link: "http://mussumipsum.com/"
+          }
+        ]
+      });
+    });
+
+    it("renders attachment props", () => {
+      const now = Date.now();
+
+      const message = SlackRenderer.render(
+        <SlackMessage>
+          <SlackAttachments>
+            <SlackAttachment color="#f1f1f1" timestamp={now} />
+          </SlackAttachments>
+        </SlackMessage>
+      );
+
+      assert.deepEqual(message, {
+        attachments: [
+          {
+            color: "#f1f1f1",
+            ts: now
           }
         ]
       });
