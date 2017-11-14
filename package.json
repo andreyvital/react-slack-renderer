@@ -1,6 +1,6 @@
 {
   "name": "@centaurwarchief/react-slack-renderer",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "license": "MIT",
   "scripts": {
     "test": "mocha --require testing/prepare --timeout 3000 **/__tests__/**.test.*"
